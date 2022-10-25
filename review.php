@@ -1,24 +1,13 @@
 <?php
 	/*store the parameters from the URL in local variables */
-    $reviewer=$_GET['person'];
-    $text=$_GET['txt'];
-	$prodCode=$_GET['prod'];
+  $reviewer=htmlspecialchars($_POST['person']);
+  $text=htmlspecialchars($_POST['txt']);
+	$prodCode=htmlspecialchars($_POST['prod']);
 	/*connect to the db */
-    $con = mysqli_connect("localhost", "root", "", "test");
-	/*insert query to insert the review in the db */
-    $query = "insert into `reviews` values('$reviewer', '$text', '$prodCode')";
-    $result = mysqli_query($con, $query);
+  $mysqli = new mysqli("localhost", "new_user", "340144024b17e6a6cb38b035f7995723", "testsite");
+  $stmt = $mysqli->prepare("INSERT INTO reviews(`name`, `review`, `productCode`) VALUES (?, ?, ?)");
 
-	if($result)
-		//If the query is successful redirect the user back to the page */
-		header("Location: items.php?id=$prodCode");
-	else
-		//If not successful display error
-    {
-      echo "The user input ". $text. " could not be parsed <br>";
-		    die("Error in database query");
-    }
-
-    mysqli_close($con);
-
+  $stmt->bind_param("sss", $reviewer, $text, $prodCode); 
+  $stmt->execute();
+	header("Location: items.php?id=$prodCode");
 ?>

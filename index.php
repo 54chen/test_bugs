@@ -18,28 +18,21 @@
 
 		<?php
 			/* PHP code to connect with the database, formulate the query and execute it on the db */
-			$con = mysqli_connect("localhost", "root", "", "test");
-			$query = "select productLine, textDescription from `productlines`";
-			$result = mysqli_query($con, $query);
-
-			if($result !=FALSE) //if the query does not result in an error and produces output do this
-			{
-				/*Wrap the output of the query in html tags and print */
-				while($row = mysqli_fetch_assoc($result)) {
-					echo '<div class="boxes" id="A">'; //creating the first box for product line
-					echo '<a href="pages.php?prodLine='; //creating the hyperlink
-					echo $row['productLine']." \">";
-					echo $row['productLine'] . "	";
-					echo '</a>';
-					echo '</div>';
-					echo '<div class="boxes" id="B">';//second box in the row for description
-					echo $row['textDescription'] . "	";
-					echo '</div>';
-				}
-			}
-			else
-				echo mysqli_error($con); //print the error in case of error
-			mysqli_close($con);
+			$mysqli = new mysqli("localhost", "new_user", "340144024b17e6a6cb38b035f7995723", "testsite");
+      $stmt = $mysqli->prepare("select productLine, textDescription from `productlines`");
+      $stmt->execute();
+      $stmt->bind_result($productLine, $textDescription);
+      while ($stmt->fetch()) {
+        echo '<div class="boxes" id="A">'; //creating the first box for product line
+        echo '<a href="pages.php?prodLine='; //creating the hyperlink
+        echo $productLine ." \">";
+        echo $productLine . "	";
+        echo '</a>';
+        echo '</div>';
+        echo '<div class="boxes" id="B">';//second box in the row for description
+        echo $textDescription . "	";
+        echo '</div>';
+      }
 		?>
         </div>
     </body>

@@ -19,31 +19,26 @@
            
 <?php
 	/* PHP code to connect with the database, formulate the query and execute it on the db */
-    $prodLine = $_GET["prodLine"]; //Get product line from the URL
-    $con = mysqli_connect("localhost", "root", "", "test");
-    $query = "select * from `products` where productLine='$prodLine'";
-    $result = mysqli_query($con, $query);
-	if($result !=FALSE) //If some result is returned
-	{
-		/*Wrap the output of the query in html tags and print */
-		while($row = mysqli_fetch_assoc($result)) {
+    $prodLine = htmlspecialchars($_GET["prodLine"]); //Get product line from the URL
+    $mysqli = new mysqli("localhost", "new_user", "340144024b17e6a6cb38b035f7995723", "testsite");
+    $stmt = $mysqli->prepare("SELECT productCode,productName,productLine,MSRP FROM `products` where `productLine` = ?");
+    $stmt->bind_param("s", $prodLine);
+    $stmt->execute();
+    $stmt->bind_result($productCode,$productName,$productLine,$MSRP);
+    while ($stmt->fetch()) {
 			echo '<div class="boxes" id="A">';
 			echo '<a href="items.php?id=';
-			echo $row['productCode']." \">";                          
-			echo $row['productName'] . "	";
+			echo $productCode." \">";                          
+			echo $productName . "	";
 			echo '</a>';
 			echo '</div>';
 			echo '<div class="boxes" id="B">';
-			echo $row['productLine'] . "	";
+			echo $productLine . "	";
 			echo '</div>';
 			echo '<div class="boxes" id="C">';
-			echo "NZD ".$row['MSRP'] . "	";
+			echo "NZD ".$MSRP . "	";
 			echo '</div>';
 		}
-	}
-	else
-		echo mysqli_error($con); //print the error in case of error
-    mysqli_close($con);
 ?>
             </div>
             </body>
