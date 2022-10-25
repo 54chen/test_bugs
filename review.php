@@ -10,5 +10,5 @@
   $stmt->bind_param("sss", $reviewer, $text, $prodCode); 
   $stmt->execute();
   $prodCode = preg_replace("[^\s]+","",$prodCode);
-	header("Location: items.php?id=$prodCode");
+	header("Location: items.php?id=".urlencode(prodCode));
 ?>
