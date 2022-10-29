@@ -11,7 +11,8 @@
     <body>
         <h1> <div class='top'><a class='toptext' href="index.php">A-ONE REPLICAS </a> </div></h1>
         <form class='inline-block-center' action="results.php" method="GET">
-            <input id='tb1' type="text" name="keywords">
+            <input id='tb1' type="text" name="keywords" minlength="2"
+      maxlength="10" pattern="[a-zA-Z0-9]{2,}$">
             <input id='but1' type="submit" value="Search">
             <br><br>
         </form>
@@ -45,9 +46,10 @@
 		<form action="review.php" method="POST">
 			<h2> leave this product a review </h2>
 			<div>
-			<input type='text' id='tb2' name='person'> <br>
-			<textarea id="txt" name="txt">
-			</textarea>
+			<input type='text' id='tb2' name='person' minlength="2"
+      maxlength="10" pattern="[a-zA-Z0-9]{2,}$"> <br>
+			<input id="txt" name="txt" minlength="2"
+      maxlength="1000" pattern="[a-zA-Z0-9]{2,}$"><br />
 			<!-- Hidden field that doesn't get displayed but holds the product code to send to review.php -->
 			<input type='hidden' name='prod' value='<?php echo $prodCode ?>'>
 			<input id='but2' type='submit' value='submit'>
